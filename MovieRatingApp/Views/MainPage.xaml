@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MovieRatingApp.Views.MainPage"
+             xmlns:viewmodels="clr-namespace:MovieRatingApp.ViewModels"
+             xmlns:models="clr-namespace:MovieRatingApp.Models.ViewDTOs"
+             x:DataType="{x:Type viewmodels:MainViewModel}">
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="25">
+            <ActivityIndicator IsRunning="{Binding MoviesAreLoading}" IsVisible="{Binding MoviesAreLoading}"/>
+
+            <CollectionView ItemsSource="{Binding Movies}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type models:MainPageMovie}">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Rating}" FontAttributes="Bold"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

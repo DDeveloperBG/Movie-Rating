@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MovieRatingApp.Utils;
 
 namespace MovieRatingApp
 {
@@ -18,6 +19,8 @@ namespace MovieRatingApp
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            ServicesConfigurator.AddDependencies(builder.Services);
 
             return builder.Build();
         }
