@@ -7,7 +7,7 @@ namespace MovieRatingApp
     {
         protected override MauiApp CreateMauiApp()
         {
-            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_dynamic_cdecl());
+            SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_sqlite3());
             return MauiProgram.CreateMauiApp();
         }
     }
