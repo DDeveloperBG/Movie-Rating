@@ -1,5 +1,4 @@
-﻿using AsyncAwaitBestPractices;
-using AutoMapper;
+﻿using AutoMapper;
 using MovieRatingApp.Models.DbModels;
 using MovieRatingApp.Models.DTOs;
 using MovieRatingApp.Services.ExternalMoviesApi;
@@ -9,8 +8,8 @@ namespace MovieRatingApp.Services.Database
 {
     public class DbService : IDbService
     {
-        private const string DB_NAME = "MyDB.db";
-        private const int SEED_SIZE = 50;
+        private const string DB_NAME = "AppDB.db";
+        private const int SEED_SIZE = 25;
 
         private readonly IExternalMoviesApiService moviesApiService;
         private readonly IMapper mapper;
@@ -23,6 +22,9 @@ namespace MovieRatingApp.Services.Database
 
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DB_NAME);
             database = new SQLiteAsyncConnection(dbPath);
+
+            database.CreateTableAsync<Movie>().Wait();
+            database.CreateTableAsync<MovieGenre>().Wait();
         }
 
         public async Task<List<T>> GetMoviesAsync<T>()
@@ -44,9 +46,6 @@ namespace MovieRatingApp.Services.Database
 
         private async Task SeedAsync()
         {
-            await database.CreateTableAsync<Movie>();
-            await database.CreateTableAsync<MovieGenre>();
-
             var movies = await moviesApiService.GetMoviesAsync(SEED_SIZE);
             var moviesWithDetails = await moviesApiService.GetMoviesDetailsAsync(movies);
 
@@ -67,7 +66,7 @@ namespace MovieRatingApp.Services.Database
                     Id = movieWithDetails.ApiId,
                     Name = movieWithDetails.Title,
                     Description = movieWithDetails.Description,
-                    Rating = (byte)Math.Floor(movieWithDetails.Rating),
+                    Rating = (byte)Math.Floor(movieWithDetails.Rating / 2),
                     ImageUrl = movieWithDetails.ImageUrl,
                     Year = movieWithDetails.Year,
                 };
