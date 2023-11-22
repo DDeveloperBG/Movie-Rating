@@ -9,7 +9,13 @@
         <CollectionView ItemsSource="{Binding Images}" ItemsLayout="HorizontalList">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type models:RatingViewImage}">
-                    <Image Source="{Binding ImageUrl}" WidthRequest="30" BackgroundColor="{Binding Color}" />
+                    <ImageButton Source="{Binding ImageUrl}"
+                           BackgroundColor="{Binding Color}" 
+                           Clicked="OnButtonClicked" 
+                           CommandParameter="{Binding Number}"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           Aspect="Fill"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

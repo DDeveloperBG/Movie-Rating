@@ -6,7 +6,7 @@ namespace MovieRatingApp.Controls
     {
         const string STAR_IMG_SRC = "Resources/Images/star_icon.svg";
         const string EMPTY_IMG_COLOR = "white";
-        const int MAX_STARS_COUNT = 5;
+        const byte MAX_STARS_COUNT = 5;
 
         public static readonly BindableProperty StarsCountProperty =
             BindableProperty.Create(nameof(StarsCount), typeof(int), typeof(RatingControl), defaultValue: 0, propertyChanged: OnStarsCountPropertyChanged);
@@ -40,6 +40,17 @@ namespace MovieRatingApp.Controls
             set => SetValue(ImagesProperty, value);
         }
 
+        public void OnButtonClicked(object sender, EventArgs args)
+        {
+            var imageButton = (ImageButton)sender;
+
+            var starNumber = (byte)imageButton.CommandParameter;
+            if (StarsCount != starNumber)
+            {
+                StarsCount = starNumber;
+            }
+        }
+
         private static void OnStarsCountPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             var control = (RatingControl)bindable;
@@ -49,12 +60,13 @@ namespace MovieRatingApp.Controls
         private void UpdateImages()
         {
             List<RatingViewImage> images = new();
-            for (int i = 0; i < MAX_STARS_COUNT; i++)
+            for (byte i = 1; i <= MAX_STARS_COUNT; i++)
             {
                 RatingViewImage image = new()
                 {
+                    Number = i,
                     ImageUrl = STAR_IMG_SRC,
-                    Color = i < StarsCount ? Color : EMPTY_IMG_COLOR,
+                    Color = i > StarsCount ? EMPTY_IMG_COLOR : Color,
                 };
 
                 images.Add(image);
