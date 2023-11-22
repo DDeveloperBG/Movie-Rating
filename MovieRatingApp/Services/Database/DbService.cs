@@ -39,6 +39,16 @@ namespace MovieRatingApp.Services.Database
             return mapper.Map<List<T>>(result);
         }
 
+        public async Task UpdateMovieRatingAsync(string movieId, byte starsCount)
+        {
+            var movie = await database.Table<Movie>().FirstAsync(x => x.Id == movieId);
+
+            movie.Rating = starsCount;
+            movie.UserRated = true;
+
+            await database.UpdateAsync(movie);
+        }
+
         private async Task<bool> IsNotSeededAsync()
         {
             return (await database.Table<Movie>().CountAsync()) == 0;

@@ -5,10 +5,12 @@
              xmlns:viewmodels="clr-namespace:MovieRatingApp.ViewModels"
              xmlns:models="clr-namespace:MovieRatingApp.Models.ViewDTOs"
              xmlns:controls="clr-namespace:MovieRatingApp.Controls"
-             x:DataType="{x:Type viewmodels:MainViewModel}">
+             x:DataType="{x:Type viewmodels:MainViewModel}"
+             x:Name="thisPage">
 
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
+            <Label Text="Movies" FontAttributes="Bold" FontSize="Large" />
             <ActivityIndicator IsRunning="{Binding MoviesAreLoading}" IsVisible="{Binding MoviesAreLoading}"/>
 
             <CollectionView ItemsSource="{Binding Movies}">
@@ -16,8 +18,12 @@
                     <DataTemplate x:DataType="{x:Type models:MainPageMovie}">
                         <Frame BorderColor="Black" Margin="0, 10">
                             <StackLayout Orientation="Vertical" Padding="10">
-                                <Label Text="{Binding Name}" FontAttributes="Bold"/>
-                                <controls:RatingControl StarsCount="{Binding Rating}" Color="#ffce08" />
+                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium" />
+                                <controls:RatingControl MovieId="{Binding Id}"
+                                                        UserRated="{Binding UserRated}"
+                                                        StarsCount="{Binding Rating}" 
+                                                        UpdateMovieCommand="{Binding Path=BindingContext.UpdateMovieCommand, Source={x:Reference thisPage}}"
+                                                        Color="#ffce08" />
                             </StackLayout>
                         </Frame>
                     </DataTemplate>

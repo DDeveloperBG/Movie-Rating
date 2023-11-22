@@ -11,7 +11,7 @@
                 <DataTemplate x:DataType="{x:Type models:RatingViewImage}">
                     <ImageButton Source="{Binding ImageUrl}"
                            BackgroundColor="{Binding Color}" 
-                           Clicked="OnButtonClicked" 
+                           Clicked="OnStarClicked" 
                            CommandParameter="{Binding Number}"
                            WidthRequest="40"
                            HeightRequest="40"
@@ -19,5 +19,6 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        <Button IsVisible="{Binding CanSubmitRating}" Clicked="OnSubmitClicked" Text="Submit" Margin="10, 0, 0, 0" />
     </StackLayout>
 </ContentView>
