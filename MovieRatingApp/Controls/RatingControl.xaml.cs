@@ -45,10 +45,12 @@ namespace MovieRatingApp.Controls
             var imageButton = (ImageButton)sender;
 
             var starNumber = (byte)imageButton.CommandParameter;
-            if (StarsCount != starNumber)
+            if (StarsCount == starNumber)
             {
-                StarsCount = starNumber;
+                starNumber = 0;
             }
+
+            StarsCount = starNumber;
         }
 
         private static void OnStarsCountPropertyChanged(BindableObject bindable, object oldValue, object newValue)
