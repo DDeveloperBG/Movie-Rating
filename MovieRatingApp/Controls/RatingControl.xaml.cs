@@ -1,16 +1,21 @@
+using MovieRatingApp.Models.ViewDTOs;
+
 namespace MovieRatingApp.Controls
 {
     public partial class RatingControl : ContentView
     {
-        const string FILLED_STAR_IMG_SRC = "Resources/Images/filled_star_icon.svg";
-        const string EMPTY_STAR_IMG_SRC = "Resources/Images/empty_star_icon.svg";
+        const string STAR_IMG_SRC = "Resources/Images/star_icon.svg";
+        const string EMPTY_IMG_COLOR = "white";
         const int MAX_STARS_COUNT = 5;
 
         public static readonly BindableProperty StarsCountProperty =
-            BindableProperty.Create(nameof(StarsCount), typeof(int), typeof(RatingControl), propertyChanged: OnStarsCountPropertyChanged);
+            BindableProperty.Create(nameof(StarsCount), typeof(int), typeof(RatingControl), defaultValue: 0, propertyChanged: OnStarsCountPropertyChanged);
+
+        public static readonly BindableProperty ColorProperty =
+          BindableProperty.Create(nameof(Color), typeof(string), typeof(RatingControl), defaultValue: "yellow");
 
         public static readonly BindableProperty ImagesProperty =
-            BindableProperty.Create(nameof(Images), typeof(List<string>), typeof(RatingControl));
+            BindableProperty.Create(nameof(Images), typeof(List<RatingViewImage>), typeof(RatingControl));
 
         public RatingControl()
         {
@@ -23,9 +28,15 @@ namespace MovieRatingApp.Controls
             set => SetValue(StarsCountProperty, value);
         }
 
-        public List<string> Images
+        public string Color
         {
-            get => (List<string>)GetValue(ImagesProperty);
+            get => (string)GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
+        }
+
+        public List<RatingViewImage> Images
+        {
+            get => (List<RatingViewImage>)GetValue(ImagesProperty);
             set => SetValue(ImagesProperty, value);
         }
 
@@ -37,12 +48,16 @@ namespace MovieRatingApp.Controls
 
         private void UpdateImages()
         {
-            List<string> images = new List<string>();
+            List<RatingViewImage> images = new();
             for (int i = 0; i < MAX_STARS_COUNT; i++)
             {
-                string src = i < StarsCount ? FILLED_STAR_IMG_SRC : EMPTY_STAR_IMG_SRC;
+                RatingViewImage image = new()
+                {
+                    ImageUrl = STAR_IMG_SRC,
+                    Color = i < StarsCount ? Color : EMPTY_IMG_COLOR,
+                };
 
-                images.Add(src);
+                images.Add(image);
             }
 
             Images = images;
